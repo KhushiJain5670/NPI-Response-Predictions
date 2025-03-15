@@ -25,7 +25,7 @@ from sklearn.metrics import accuracy_score
 # In[123]:
 
 
-dataset = pd.read_csv(r"C:\Users\user\Downloads\dummy_npi_dataset.csv")
+dataset = pd.read_csv("data/dummy_npi_dataset.csv")
 
 
 # In[124]:

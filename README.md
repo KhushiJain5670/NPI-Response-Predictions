@@ -17,4 +17,4 @@ This repository contains a Streamlit app that predicts which doctors (NPIs) are 
    pip install -r requirements.txt
 
    Run the app :
-   streamlit run Untitled4.py
+   streamlit run Doctor NPI.py

@@ -39,16 +39,16 @@ if uploaded_file is not None:
 # In[124]:
 
 
-print("Dataset columns:", dataset.columns)
-print("Dataset shape:", dataset.shape)
-print("Dataset preview:", dataset.head())
+print("Dataset columns:", df.columns)
+print("Dataset shape:", df.shape)
+print("Dataset preview:", df.head())
 
 
 # In[125]:
 
 
-if dataset.shape[1] > 1:  # Ensure there's more than 1 column
-    X = dataset.iloc[:, :-1].values
+if df.shape[1] > 1:  # Ensure there's more than 1 column
+    X = df.iloc[:, :-1].values
     print("Shape of X:", X.shape)
 else:
     print("Not enough columns to slice features.")
@@ -57,21 +57,21 @@ else:
 # In[126]:
 
 
-X = dataset.iloc[:, :-1].values
-Y = dataset.iloc[:, -1].values
+X = df.iloc[:, :-1].values
+Y = df.iloc[:, -1].values
 
 
 # In[127]:
 
 
-dataset['Login Time'] = pd.to_datetime(dataset['Login Time'])
-dataset['Logout Time'] = pd.to_datetime(dataset['Logout Time'])
-dataset['Login Hour'] = dataset['Login Time'].dt.hour
-dataset['Logout Hour'] = dataset['Logout Time'].dt.hour
-dataset['Session Duration (mins)'] = (dataset['Logout Time'] - dataset['Login Time']).dt.total_seconds() /60
+df['Login Time'] = pd.to_datetime(df['Login Time'])
+df['Logout Time'] = pd.to_datetime(df['Logout Time'])
+df['Login Hour'] = df['Login Time'].dt.hour
+df['Logout Hour'] = df['Logout Time'].dt.hour
+df['Session Duration (mins)'] = (df['Logout Time'] - df['Login Time']).dt.total_seconds() /60
 features = ['Login Hour','Logout Hour', 'Session Duration (mins)', 'Count of Survey Attempts']
-x = dataset[features].values
-y = dataset['Count of Survey Attempts']
+x = df[features].values
+y = df['Count of Survey Attempts']
 
 
 # In[128]:
@@ -84,9 +84,9 @@ label_encoder = LabelEncoder()
 # Convert categorical columns to numeric
 categorical_columns = ['State', 'Region', 'Speciality']
 for col in categorical_columns:
-    dataset[col] = label_encoder.fit_transform(dataset[col])
+    df[col] = label_encoder.fit_transform(df[col])
 
-print(dataset.head())
+print(df.head())
 
 
 # In[129]:
@@ -100,14 +100,14 @@ ct = ColumnTransformer(transformers = [('encoder', OneHotEncoder(),[1,5,6])], re
 # In[130]:
 
 
-print(dataset[['Login Hour', 'Logout Hour', 'Usage Time (mins)']].dtypes)
+print(df[['Login Hour', 'Logout Hour', 'Usage Time (mins)']].dtypes)
 
 
 # In[131]:
 
 
 features = ['Login Hour', 'Logout Hour', 'Session Duration (mins)', 'Count of Survey Attempts']
-X = dataset[features]
+X = df[features]
 
 # Ensure X is fully numeric
 print(X.dtypes)
@@ -127,12 +127,12 @@ except Exception as e:
 
 
 # Ensure datetime columns are properly converted
-dataset['Login Hour'] = pd.to_datetime(dataset['Login Time'], errors='coerce').dt.hour
-dataset['Logout Hour'] = pd.to_datetime(dataset['Logout Time'], errors='coerce').dt.hour
-dataset['Session Duration (mins)'] = (dataset['Logout Time'] - dataset['Login Time']).dt.total_seconds() / 60
+df['Login Hour'] = pd.to_datetime(df['Login Time'], errors='coerce').dt.hour
+df['Logout Hour'] = pd.to_datetime(df['Logout Time'], errors='coerce').dt.hour
+df['Session Duration (mins)'] = (df['Logout Time'] - df['Login Time']).dt.total_seconds() / 60
 
 # Check if there are any null values left
-print(dataset[['Login Hour', 'Logout Hour', 'Session Duration (mins)']].isnull().sum())
+print(df[['Login Hour', 'Logout Hour', 'Session Duration (mins)']].isnull().sum())
 
 
 # In[134]:
@@ -162,7 +162,7 @@ accuracy = accuracy_score(Y_test, model.predict(X_test))
 
 def predict_doctors(model, time, dataset):
     hour = pd.to_datetime(time).hour
-    filtered_dataset = dataset[dataset['Hour'] == hour]
+    filtered_dataset = df[df['Hour'] == hour]
     X = filtered_dataset[['Hour', 'Session Duration (mins)', 'Count of Survey Attempts']]
     predictions = model.predict(X)
     responsive_doctors = filtered_dataset[predictions == 1]['NPI']
@@ -187,7 +187,7 @@ if st.sidebar.button("Predict"):
     hour = pd.to_datetime(time_input).hour
     
     # Filter dataset for that hour
-    filtered_data = dataset[dataset['Login Hour'] == hour]
+    filtered_data = df[df['Login Hour'] == hour]
     
     # Prepare X for prediction
     X_predict = filtered_data[features]

@@ -24,8 +24,17 @@ from sklearn.metrics import accuracy_score
 
 # In[123]:
 
+ import streamlit as st
 
-dataset = pd.read_csv("data/dummy_npi_dataset.csv")
+# File uploader
+uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
+
+if uploaded_file is not None:
+    dataset = pd.read_csv(uploaded_file)  # Read the uploaded file
+    st.write("Preview of uploaded file:")
+    st.write(df.head()) 
+
+
 
 
 # In[124]:

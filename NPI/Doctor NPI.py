@@ -24,8 +24,6 @@ from sklearn.metrics import accuracy_score
 
 # In[123]:
 
- import streamlit as st
-
 # File uploader
 uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
 

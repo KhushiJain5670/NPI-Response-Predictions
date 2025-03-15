@@ -31,6 +31,7 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)  # Read the uploaded file
     st.write("Preview of uploaded file:")
     st.write(df.head()) 
+    st.write("Dataset columns:", df.columns)
 
 
 

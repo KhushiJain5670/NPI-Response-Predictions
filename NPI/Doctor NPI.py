@@ -176,6 +176,8 @@ import streamlit as st
 st.title("🩺Doctor Survey Response Predictor")
 st.sidebar.header("Predict Doctor Responses")
 time_input = st.sidebar.text_input("Enter Time (HH:MM)", "14:00")
+st.write(f"*Model Accuracy: {accuracy:.2f}*")
+
 
 st.markdown("""
 This app predicts which doctors are most likely to respond to survey invitations at a given time.
